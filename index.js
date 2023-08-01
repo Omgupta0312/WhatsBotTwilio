@@ -1,5 +1,17 @@
 const express = require('express');
+const User = require('./models/user.js');
+
 require('dotenv').config();
+
+
+const mongoose = require('mongoose');
+mongoose.connect(process.env.DB_URI)
+.then(()=>{
+    console.log("Database Connected");
+}).catch((err)=>{
+    console.log(err);
+})
+
 
 const app = express();
 const port = 3000; // Change the port as needed
@@ -13,7 +25,9 @@ const authToken = process.env.AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
 function generateReply(message) {
-    return `You said: ${message}`;
+    console.log(message)
+    return `You said to me: ${message}`;
+
   }
  
 app.get('/',(req,res)=>{
@@ -24,6 +38,7 @@ app.post('/webhook', (req, res) => {
     const sender = req.body.From;
   
     // Your callback function to process the incoming message and generate a reply
+    console.log(message)
     const reply = generateReply(message);
   
     // Send the reply using the Twilio API
