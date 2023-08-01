@@ -44,7 +44,7 @@ app.post('/webhook', (req, res) => {
     // Send the reply using the Twilio API
     client.messages.create({
       body: reply,
-      from: '+14155238886', // Your Twilio phone number
+      from: 'whatsapp:+14155238886', // Your Twilio phone number
       to: sender,
     })
     .then(message => console.log(`Message sent: ${message.sid}`))
