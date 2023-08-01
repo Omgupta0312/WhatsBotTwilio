@@ -31,6 +31,8 @@ async function generateReply(message) {
 
     try{
         const [name,email,phone] = message.split('\n');
+        console.log(name,email,phone);
+        
         const existing1 = await User.findOne({email});
         const existing2 = await User.findOne({phone});
     
@@ -40,7 +42,9 @@ async function generateReply(message) {
     
         const user = new User({name,email,phone});
         await user.save();
+
     }catch(err){
+        console.log(err);
         return `Something failed !!! Please provide your name , email and phone number in seperate lines --`;
     }
    
