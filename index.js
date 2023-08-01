@@ -24,22 +24,40 @@ const accountSid = process.env.SID;
 const authToken = process.env.AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
-function generateReply(message) {
-    console.log(message)
-    return `You said to me: ${message}`;
+async function generateReply(message) {
+    if(['hi','hey','hello'].includes(message.toLowerCase())){
+        return `Hi , Please provide your name , email and phone number in seperate lines -->`;
+    }
+
+    try{
+        const [name,email,phone] = message.split('\n');
+        const existing1 = await User.findOne({email});
+        const existing2 = await User.findOne({phone});
+    
+        if(existing1 || existing2){
+            return `EMAIL OR PHONE ALREADY EXISTS`
+        }
+    
+        const user = new User({name,email,phone});
+        await user.save();
+    }catch(err){
+        return `Something failed !!! Please provide your name , email and phone number in seperate lines --`;
+    }
+   
+
 
   }
  
 app.get('/',(req,res)=>{
     res.status(200).send("Welcome to the bot");
 })
-app.post('/webhook', (req, res) => {
+app.post('/webhook', async (req, res) => {
     const message = req.body.Body;
     const sender = req.body.From;
   
     // Your callback function to process the incoming message and generate a reply
     console.log(message)
-    const reply = generateReply(message);
+    const reply = await generateReply(message);
   
     // Send the reply using the Twilio API
     client.messages.create({
