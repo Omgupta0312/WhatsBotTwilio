@@ -1,5 +1,5 @@
 //Schema
-const User = require("../models/user");
+const User = require("./models/user");
 
 const isValidEmail = (email) => {
   const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -37,12 +37,12 @@ const generateReply = async (message) => {
     if (!validDetails) {
       let msg = "";
       if(!isValidEmail(email)){
-        msg = "Email Invalid"
+        msg = "Email Invalid,"
       }
       if(!isValidMobileNumber(phone)){
-        msg = msg + "Invalid Phone Number"
+        msg = msg + "Invalid Phone Number,"
       }
-      return `EMAIL OR PHONE NUMBER FORMAT IS WRONG!! ${"\n"} Please Provide your name , email and phone number in correct format and also in seperate lines :)`;
+      return `${msg} !! ${"\n"} Please Provide your name , email and phone number in correct format and also in seperate lines :)`;
     }
 
     const existing1 = await User.findOne({ email });
