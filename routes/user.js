@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-require('dotenv').config();
+const { generateReply } = require("../inputValidaters");
+require("dotenv").config();
 
 //Schema
 const User = require("../models/user");
@@ -8,36 +9,7 @@ const User = require("../models/user");
 //twilio set up
 const accountSid = process.env.SID;
 const authToken = process.env.AUTH_TOKEN;
-const client = require('twilio')(accountSid, authToken);
-
-
-const generateReply = async(message) => {
-    if(['hi','hey','hello'].includes(message.toLowerCase())){
-        return `Hi , Please provide your name , email and phone number in seperate lines -->`;
-    }
-
-    try{
-        const [name,email,phone] = message.split('\n');
-        console.log(name,email,phone);
-
-        const existing1 = await User.findOne({email});
-        const existing2 = await User.findOne({phone});
-    
-        if(existing1 || existing2){
-            return `EMAIL OR PHONE ALREADY EXISTS`
-        }
-    
-        const user = new User({name,email,phone});
-        await user.save();
-        return 'Thankyou!!! We got the details. Will connect Soon !!';
-
-    }catch(err){
-        console.log(err);
-        return `Something failed !!! Please provide your name , email and phone number in seperate lines --`;
-    }
-
-}
-
+const client = require("twilio")(accountSid, authToken);
 
 router.route("/").get((req, res) => {
   res.status(200).send("Welcome to the bot");

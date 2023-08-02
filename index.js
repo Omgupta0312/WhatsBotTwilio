@@ -1,18 +1,18 @@
-const express = require('express');
-const User = require('./models/user.js');
-const userRouters = require('./routes/user.js')
+const express = require("express");
+const User = require("./models/user.js");
+const userRouters = require("./routes/user.js");
 
-require('dotenv').config();
+require("dotenv").config();
 
-
-const mongoose = require('mongoose');
-mongoose.connect(process.env.DB_URI)
-.then(()=>{
+const mongoose = require("mongoose");
+mongoose
+  .connect(process.env.DB_URI)
+  .then(() => {
     console.log("Database Connected");
-}).catch((err)=>{
+  })
+  .catch((err) => {
     console.log(err);
-})
-
+  });
 
 const app = express();
 const port = 3000; // Change the port as needed
@@ -20,8 +20,7 @@ const port = 3000; // Change the port as needed
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
-app.use('/',userRouters)
+app.use("/", userRouters);
 
 // const accountSid = process.env.SID;
 // const authToken = process.env.AUTH_TOKEN;
@@ -38,11 +37,11 @@ app.use('/',userRouters)
 
 //         const existing1 = await User.findOne({email});
 //         const existing2 = await User.findOne({phone});
-    
+
 //         if(existing1 || existing2){
 //             return `EMAIL OR PHONE ALREADY EXISTS`
 //         }
-    
+
 //         const user = new User({name,email,phone});
 //         await user.save();
 //         return 'Thankyou!!! We got the details. Will connect Soon !!';
@@ -51,22 +50,20 @@ app.use('/',userRouters)
 //         console.log(err);
 //         return `Something failed !!! Please provide your name , email and phone number in seperate lines --`;
 //     }
-   
-
 
 //   }
- 
+
 // app.get('/',(req,res)=>{
 //     res.status(200).send("Welcome to the bot");
 // })
 // app.post('/webhook', async (req, res) => {
 //     const message = req.body.Body;
 //     const sender = req.body.From;
-  
+
 //     // Your callback function to process the incoming message and generate a reply
 //     console.log(message)
 //     const reply = await generateReply(message);
-  
+
 //     // Send the reply using the Twilio API
 //     client.messages.create({
 //       body: reply,
@@ -75,7 +72,7 @@ app.use('/',userRouters)
 //     })
 //     .then(message => console.log(`Message sent: ${message.sid}`))
 //     .catch(err => console.error(err));
-  
+
 //     res.status(200).end();
 //   });
 
